@@ -46,7 +46,7 @@ will load the image from "file_name" and load "sem_seg" from "sem_seg_file_name"
 + `file_name`: the full path to the image file. Will apply rotation and flipping if the image has such exif information.
 + `sem_seg_file_name`: the full path to the ground truth semantic segmentation file.
 + `sem_seg`: semantic segmentation ground truth in a 2D `torch.Tensor`. Values in the array represent
-   category labels.
+   category labels starting from 0.
 + `height`, `width`: integer. The shape of image.
 + `image_id` (str or int): a unique id that identifies this image. Used
 	during evaluation to identify the images, but a dataset may use it for different purposes.
@@ -64,7 +64,8 @@ will load the image from "file_name" and load "sem_seg" from "sem_seg_file_name"
       of the object. Each `list[float]` is one simple polygon in the format of `[x1, y1, ..., xn, yn]`.
       The Xs and Ys are either relative coordinates in [0, 1], or absolute coordinates,
       depend on whether "bbox_mode" is relative.
-    + If `dict`, it represents the per-pixel segmentation mask in COCO's RLE format.
+    + If `dict`, it represents the per-pixel segmentation mask in COCO's RLE format. The dict should have
+			keys "size" and "counts".
   + `keypoints` (list[float]): in the format of [x1, y1, v1,..., xn, yn, vn].
     v[i] means the [visibility](http://cocodataset.org/#format-data) of this keypoint.
     `n` must be equal to the number of keypoint categories.
