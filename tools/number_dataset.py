@@ -181,7 +181,6 @@ def register_number_instances():
   seq_dir = '/content'
 
   DatasetCatalog.clear()
-  from detectron2.data import DatasetCatalog, MetadataCatalog
   for d in ["train", "val"]:
       DatasetCatalog.register("supervisely_" + d, lambda d=d: get_seq_dicts(d, seq_dir, SEQUENCES))
       MetadataCatalog.get("supervisely_" + d).set(thing_classes=["shirt_number"])
