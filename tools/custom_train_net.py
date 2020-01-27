@@ -163,6 +163,8 @@ def do_train(cfg, model, optimizer, resume=False):
         for data, iteration in zip(data_loader, range(start_iter, max_iter)):
             iteration = iteration + 1
             storage.step()
+            
+            print('iteration: ', iteration)
 
             loss_dict = model(data)
             losses = sum(loss for loss in loss_dict.values())
@@ -222,7 +224,7 @@ def main(args):
         return do_test(cfg, model)
 
     optimizer = build_optimizer(cfg, model)
-    model, optimizer = amp.initialize(model, optimizer, opt_level='O1') # 'O1', 'O0'
+    model, optimizer = amp.initialize(model, optimizer, opt_level='O2') # 'O1', 'O0'
     distributed = comm.get_world_size() > 1
     if distributed:
         model = DistributedDataParallel(
