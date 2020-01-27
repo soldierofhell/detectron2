@@ -19,24 +19,24 @@ CROP_SRC_DIR = os.path.join('/content',
 )
 
 SEQUENCES = {
-'train': [
-{'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_3',
-'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_3']},
-{'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_1',
-'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_1']},
-{'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_2',
-'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_2']},
-{'type': 'full', 'dir': ['full-ocr-combined-pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_0_1000',
-'pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_0_1000']},
-{'type': 'full', 'dir': ['full-ocr-combined-pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_1000_2000',
-'pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_1000_2000']},
-{'type': 'full', 'dir': ['full-ocr-combined-pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_2000_3394',
-'pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_2000_3394']},
-],
-'val': [
-{'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_0',
-'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_0']},
-]
+  'train': [
+    {'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_3',
+    'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_3']},
+    {'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_1',
+    'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_1']},
+    {'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_2',
+    'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_2']},
+    {'type': 'full', 'dir': ['full-ocr-combined-pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_0_1000',
+    'pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_0_1000']},
+    {'type': 'full', 'dir': ['full-ocr-combined-pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_1000_2000',
+    'pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_1000_2000']},
+    {'type': 'full', 'dir': ['full-ocr-combined-pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_2000_3394',
+    'pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_2000_3394']},
+  ],
+  'val': [
+    {'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_0',
+    'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_0']},
+  ]
 }
 
 def get_supervisely_dicts_cropped(sequences, dataset_type):
