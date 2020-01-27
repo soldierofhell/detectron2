@@ -358,6 +358,7 @@ class DeformConv(nn.Module):
 
         nn.init.kaiming_uniform_(self.weight, nonlinearity="relu")
 
+    @amp.float_function
     def forward(self, x, offset):
         if x.numel() == 0:
             # When input is empty, we want to return a empty tensor with "correct" shape,
@@ -452,6 +453,7 @@ class ModulatedDeformConv(nn.Module):
         if self.bias is not None:
             nn.init.constant_(self.bias, 0)
 
+    @amp.float_function
     def forward(self, x, offset, mask):
         if x.numel() == 0:
             output_shape = [
