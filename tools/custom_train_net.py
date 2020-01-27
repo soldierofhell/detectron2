@@ -129,9 +129,8 @@ def do_test(cfg, model):
     return results
 
 
-def do_train(cfg, model, resume=False):
-    model.train()
-    optimizer = build_optimizer(cfg, model)
+def do_train(cfg, model, optimizer, resume=False):
+    model.train()    
     scheduler = build_lr_scheduler(cfg, optimizer)
 
     checkpointer = DetectionCheckpointer(
@@ -220,13 +219,15 @@ def main(args):
         )
         return do_test(cfg, model)
 
+    optimizer = build_optimizer(cfg, model)
+    model, optimizer = amp.initialize(model, optimizer, opt_level='O0') # 'O1'
     distributed = comm.get_world_size() > 1
     if distributed:
         model = DistributedDataParallel(
             model, device_ids=[comm.get_local_rank()], broadcast_buffers=False
         )
 
-    do_train(cfg, model)
+    do_train(cfg, model, optimizer)
     return do_test(cfg, model)
 
 
