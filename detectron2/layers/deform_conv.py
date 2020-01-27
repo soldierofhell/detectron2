@@ -11,6 +11,8 @@ from detectron2 import _C
 
 from .wrappers import _NewEmptyTensorOp
 
+from apex import amp
+
 
 class _DeformConv(Function):
     @staticmethod
