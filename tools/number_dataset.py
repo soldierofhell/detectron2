@@ -178,6 +178,9 @@ def get_seq_dicts(d, seq_dir, sequences):
   return dataset_dicts
 
 def register_number_instances():
+  
+  from detectron2.data import DatasetCatalog, MetadataCatalog
+  
   seq_dir = '/content'
 
   DatasetCatalog.clear()
