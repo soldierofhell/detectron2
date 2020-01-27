@@ -55,6 +55,16 @@ from detectron2.utils.events import (
 
 import number_dataset
 
+try:
+    #from apex.parallel import DistributedDataParallel as DDP
+    #from apex.fp16_utils import *
+    from apex import amp, optimizers
+    #from apex.multi_tensor_apply import multi_tensor_applier
+except ImportError:
+    raise ImportError(
+        "Please install apex from https://www.github.com/nvidia/apex to run this example."
+    )
+
 logger = logging.getLogger("detectron2")
 
 number_dataset.register_number_instances()
