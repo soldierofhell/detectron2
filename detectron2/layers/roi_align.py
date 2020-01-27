@@ -6,6 +6,7 @@ from torch.nn.modules.utils import _pair
 
 from detectron2 import _C
 
+from apex import amp
 
 class _ROIAlign(Function):
     @staticmethod
@@ -84,6 +85,7 @@ class ROIAlign(nn.Module):
         self.sampling_ratio = sampling_ratio
         self.aligned = aligned
 
+    @amp.float_function
     def forward(self, input, rois):
         """
         Args:
