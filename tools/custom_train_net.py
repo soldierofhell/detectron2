@@ -57,6 +57,7 @@ import number_dataset
 
 logger = logging.getLogger("detectron2")
 
+number_dataset.register_number_instances()
 
 def get_evaluator(cfg, dataset_name, output_folder=None):
     """
