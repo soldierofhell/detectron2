@@ -177,11 +177,12 @@ def get_seq_dicts(d, seq_dir, sequences):
   dataset_dicts.extend(get_supervisely_dicts_cropped(sequences, d))
   return dataset_dicts
 
-seq_dir = '/content'
+def register_number_instances():
+  seq_dir = '/content'
 
-DatasetCatalog.clear()
-from detectron2.data import DatasetCatalog, MetadataCatalog
-for d in ["train", "val"]:
-    DatasetCatalog.register("supervisely_" + d, lambda d=d: get_seq_dicts(d, seq_dir, SEQUENCES))
-    MetadataCatalog.get("supervisely_" + d).set(thing_classes=["shirt_number"])
-supervisely_metadata = MetadataCatalog.get("supervisely_train")
+  DatasetCatalog.clear()
+  from detectron2.data import DatasetCatalog, MetadataCatalog
+  for d in ["train", "val"]:
+      DatasetCatalog.register("supervisely_" + d, lambda d=d: get_seq_dicts(d, seq_dir, SEQUENCES))
+      MetadataCatalog.get("supervisely_" + d).set(thing_classes=["shirt_number"])
+  supervisely_metadata = MetadataCatalog.get("supervisely_train")
