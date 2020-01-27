@@ -224,7 +224,7 @@ def main(args):
         return do_test(cfg, model)
 
     optimizer = build_optimizer(cfg, model)
-    model, optimizer = amp.initialize(model, optimizer, opt_level='O2') # 'O1', 'O0'
+    model, optimizer = amp.initialize(model, optimizer, opt_level='O1') # 'O1', 'O0'
     distributed = comm.get_world_size() > 1
     if distributed:
         model = DistributedDataParallel(
