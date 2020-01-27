@@ -53,6 +53,8 @@ from detectron2.utils.events import (
     TensorboardXWriter,
 )
 
+import number_dataset
+
 logger = logging.getLogger("detectron2")
 
 
