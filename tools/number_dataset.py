@@ -1,3 +1,43 @@
+import json
+import os
+
+import cv2
+import numpy as np
+
+import detectron2
+from detectron2.utils.logger import setup_logger
+setup_logger()
+
+from detectron2.structures import BoxMode
+
+from detectron2.data import DatasetCatalog, MetadataCatalog
+
+CROP_SRC_DIR = os.path.join('/content',
+                       'input_new_pseudolabel_assorted_pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000',
+                       'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000',
+                       'ekstraklasa_kolejki_201819_set1',
+)
+
+SEQUENCES = {
+'train': [
+{'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_3',
+'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_3']},
+{'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_1',
+'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_1']},
+{'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_2',
+'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_2']},
+{'type': 'full', 'dir': ['full-ocr-combined-pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_0_1000',
+'pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_0_1000']},
+{'type': 'full', 'dir': ['full-ocr-combined-pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_1000_2000',
+'pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_1000_2000']},
+{'type': 'full', 'dir': ['full-ocr-combined-pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_2000_3394',
+'pseudolabel_ekstraklasa_kolejki_2018_2019_filtered_set2_vids0_50_idx_2000_3394']},
+],
+'val': [
+{'type': 'crop', 'dir': ['ocr-combined-pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_0',
+'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000-part_0']},
+]
+}
 
 def get_supervisely_dicts_cropped(sequences, dataset_type):
 
@@ -125,3 +165,23 @@ def get_supervisely_dicts(base_dir):
     if len(objs)>0:
       dataset_dicts.append(record)
   return dataset_dicts
+
+# todo: poprawić
+def get_seq_dicts(d, seq_dir, sequences):
+  dataset_dicts = []
+
+  crop_seqs = [seq['dir'] for seq in sequences[d] if seq['type']=="crop"]
+  for seq in crop_seqs:
+    dataset_dicts.extend(get_supervisely_dicts(os.path.join(seq_dir, seq[0], seq[1])))
+  
+  dataset_dicts.extend(get_supervisely_dicts_cropped(sequences, d))
+  return dataset_dicts
+
+seq_dir = '/content'
+
+DatasetCatalog.clear()
+from detectron2.data import DatasetCatalog, MetadataCatalog
+for d in ["train", "val"]:
+    DatasetCatalog.register("supervisely_" + d, lambda d=d: get_seq_dicts(d, seq_dir, SEQUENCES))
+    MetadataCatalog.get("supervisely_" + d).set(thing_classes=["shirt_number"])
+supervisely_metadata = MetadataCatalog.get("supervisely_train")
