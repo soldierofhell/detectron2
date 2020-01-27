@@ -85,7 +85,7 @@ class ROIAlign(nn.Module):
         self.sampling_ratio = sampling_ratio
         self.aligned = aligned
 
-    @amp.float_function
+    #@amp.float_function
     def forward(self, input, rois):
         """
         Args:
