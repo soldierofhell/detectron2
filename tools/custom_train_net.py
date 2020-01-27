@@ -174,7 +174,9 @@ def do_train(cfg, model, optimizer, resume=False):
                 storage.put_scalars(total_loss=losses_reduced, **loss_dict_reduced)
 
             optimizer.zero_grad()
-            losses.backward()
+            #losses.backward()
+            with amp.scale_loss(losses, optimizer) as scaled_loss:
+                scaled_loss.backward()
             optimizer.step()
             storage.put_scalar("lr", optimizer.param_groups[0]["lr"], smoothing_hint=False)
             scheduler.step()
