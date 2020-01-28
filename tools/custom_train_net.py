@@ -67,6 +67,7 @@ except ImportError:
 
 logger = logging.getLogger("detectron2")
 
+number_dataset.create_crop_dataset()
 number_dataset.register_number_instances()
 
 def get_evaluator(cfg, dataset_name, output_folder=None):
