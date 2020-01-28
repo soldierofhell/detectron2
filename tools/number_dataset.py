@@ -12,7 +12,9 @@ from detectron2.structures import BoxMode
 
 from detectron2.data import DatasetCatalog, MetadataCatalog
 
-CROP_SRC_DIR = os.path.join('/content',
+BASE_DIR = '/home/miron/respo/numbers' #'/content'
+
+CROP_SRC_DIR = os.path.join(BASE_DIR,
                        'input_new_pseudolabel_assorted_pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000',
                        'pseudolabel_runOne_ekstraklasa_kolejki_201819_set1-imgs_0_5000',
                        'ekstraklasa_kolejki_201819_set1',
@@ -41,7 +43,7 @@ SEQUENCES = {
 
 def get_supervisely_dicts_cropped(sequences, dataset_type):
 
-  BASE_DIR = '/home/miron/respo/numbers' #'/content'
+
   IMAGE_DIR = os.path.join(BASE_DIR, 'detections')
   os.makedirs(IMAGE_DIR, exist_ok=True)
   dst_dir = os.path.join(IMAGE_DIR, dataset_type)
