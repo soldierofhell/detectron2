@@ -41,6 +41,24 @@ SEQUENCES = {
   ]
 }
 
+def create_crop_dataset():
+  bbox_dir = os.path.join(CROP_SRC_DIR, 'bbox_crops')
+
+  os.makedirs(bbox_dir, exist_ok=True)
+
+  ann_dir = os.path.join(CROP_SRC_DIR, 'ann')
+
+  for ann in sorted(os.listdir(ann_dir)):
+    img = cv2.imread(os.path.join(CROP_SRC_DIR, 'img', ann[:-3] + 'jpg'))
+    with(open(os.path.join(CROP_SRC_DIR, 'ann', ann))) as f:
+      lines = f.readlines()[1:]
+    for idx, l in enumerate(lines):
+      row = [x.strip() for x in l.split(',')]  
+      x1, y1, x2, y2 = [int(float(r)) for r in row[:4]]
+      crop_file = ann[:ann.find('-')] + f'-crop_{idx}' + ann[ann.find('-'):-3] + 'jpg'
+      crop_img = cv2.resize(img[y1:y2, x1:x2], (224, 384))
+      cv2.imwrite(os.path.join(bbox_dir, crop_file), crop_img)  
+
 def get_supervisely_dicts_cropped(sequences, dataset_type):
 
 
