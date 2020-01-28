@@ -184,7 +184,7 @@ def register_number_instances():
   
   from detectron2.data import DatasetCatalog, MetadataCatalog
   
-  seq_dir = '/content'
+  seq_dir = BASE_DIR
 
   DatasetCatalog.clear()
   for d in ["train", "val"]:
