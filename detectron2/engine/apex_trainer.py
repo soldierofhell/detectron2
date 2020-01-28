@@ -5,6 +5,7 @@ from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.utils.logger import setup_logger
 from apex import amp
 
+__all__ = ["ApexTrainer"]
 
 class ApexTrainer(DefaultTrainer):
     def __init__(self, cfg):
