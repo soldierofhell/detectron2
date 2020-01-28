@@ -41,11 +41,12 @@ SEQUENCES = {
 
 def get_supervisely_dicts_cropped(sequences, dataset_type):
 
-  IMAGE_DIR = '/content/detections'
+  BASE_DIR = '/home/miron/respo/numbers' #'/content'
+  IMAGE_DIR = os.path.join(BASE_DIR, 'detections')
   os.makedirs(IMAGE_DIR, exist_ok=True)
   dst_dir = os.path.join(IMAGE_DIR, dataset_type)
   os.makedirs(dst_dir, exist_ok=True)
-  seq_dir = '/content'
+  seq_dir = BASE_DIR
 
   obj_dict = {}
 
