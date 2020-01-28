@@ -3,6 +3,9 @@ import logging
 from detectron2.engine import DefaultTrainer, SimpleTrainer
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.utils.logger import setup_logger
+
+import detectron2.utils.comm as comm
+
 from apex import amp
 
 __all__ = ["ApexTrainer"]
