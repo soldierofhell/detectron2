@@ -168,7 +168,7 @@ def do_train(cfg, model, optimizer, resume=False):
             iteration = iteration + 1
             storage.step()
             
-            print('iteration: ', iteration)
+            logger.info("iteration: {}".format(iteration))
 
             loss_dict = model(data)
             losses = sum(loss for loss in loss_dict.values())
@@ -182,9 +182,9 @@ def do_train(cfg, model, optimizer, resume=False):
             logger.info("memory after forward: {}".format(torch.cuda.memory_allocated()))
 
             optimizer.zero_grad()
-            losses.backward()
-            #with amp.scale_loss(losses, optimizer) as scaled_loss:
-            #    scaled_loss.backward()
+            #losses.backward()
+            with amp.scale_loss(losses, optimizer) as scaled_loss:
+                scaled_loss.backward()
             optimizer.step()
             storage.put_scalar("lr", optimizer.param_groups[0]["lr"], smoothing_hint=False)
             scheduler.step()
@@ -232,7 +232,7 @@ def main(args):
         return do_test(cfg, model)
 
     optimizer = build_optimizer(cfg, model)
-    #model, optimizer = amp.initialize(model, optimizer, opt_level='O0') # 'O1', 'O0'
+    model, optimizer = amp.initialize(model, optimizer, opt_level='O0') # 'O1', 'O0'
     distributed = comm.get_world_size() > 1
     if distributed:
         model = DistributedDataParallel(
