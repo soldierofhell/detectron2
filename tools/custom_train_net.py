@@ -161,7 +161,7 @@ def do_train(cfg, model, optimizer, resume=False):
     data_loader = build_detection_train_loader(cfg)
     logger.info("Starting training from iteration {}".format(start_iter))
     
-    logger.info("memory before training: {}".format(torch.cuda.memory_summary()))
+    logger.info("memory before training: {}".format(torch.cuda.memory_allocated()))
     
     with EventStorage(start_iter) as storage:
         for data, iteration in zip(data_loader, range(start_iter, max_iter)):
@@ -179,7 +179,7 @@ def do_train(cfg, model, optimizer, resume=False):
             if comm.is_main_process():
                 storage.put_scalars(total_loss=losses_reduced, **loss_dict_reduced)
                 
-            logger.info("memory after forward: {}".format(torch.cuda.memory_summary()))
+            logger.info("memory after forward: {}".format(torch.cuda.memory_allocated()))
 
             optimizer.zero_grad()
             losses.backward()
@@ -189,7 +189,7 @@ def do_train(cfg, model, optimizer, resume=False):
             storage.put_scalar("lr", optimizer.param_groups[0]["lr"], smoothing_hint=False)
             scheduler.step()
             
-            logger.info("memory after backward: {}".format(torch.cuda.memory_summary()))
+            logger.info("memory after backward: {}".format(torch.cuda.memory_allocated()))
 
             if (
                 cfg.TEST.EVAL_PERIOD > 0
