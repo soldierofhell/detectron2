@@ -8,10 +8,10 @@ import os
 
 setup_logger() # ?
 
-def get_supervisely_dicts(base_dir):
+def get_supervisely_dicts(base_dir, sub_dir, categories):
 
-  ann_dir = os.path.join(base_dir, 'MOT', 'ann')
-  img_dir = os.path.join(base_dir, 'MOT', 'img')
+  ann_dir = os.path.join(base_dir, sub_dir, 'ann')
+  img_dir = os.path.join(base_dir, sub_dir, 'img')
 
   anns = sorted(os.listdir(ann_dir))
 
@@ -32,16 +32,18 @@ def get_supervisely_dicts(base_dir):
 
     objs = []
     for anno in ann_dict["objects"]:
-      bbox = anno["points"]["exterior"]
-      bbox = bbox[0]+bbox[1]
-      bbox = [min(bbox[0], bbox[2]), min(bbox[1], bbox[3]), max(bbox[0], bbox[2]), max(bbox[1], bbox[3])]
-      obj = {
-          "bbox": bbox,
-          "bbox_mode": BoxMode.XYXY_ABS,
-          "category_id": 0,
-          "iscrowd": 0
-      }
-      objs.append(obj)
+      category = anno["classTitle"]
+      if category in categories:
+        bbox = anno["points"]["exterior"]
+        bbox = bbox[0]+bbox[1]
+        bbox = [min(bbox[0], bbox[2]), min(bbox[1], bbox[3]), max(bbox[0], bbox[2]), max(bbox[1], bbox[3])]
+        obj = {
+            "bbox": bbox,
+            "bbox_mode": BoxMode.XYXY_ABS,
+            "category_id": categories.index(category),
+            "iscrowd": 0
+        }
+        objs.append(obj)
     record["annotations"] = objs
     dataset_dicts.append(record)
   return dataset_dicts
