@@ -79,6 +79,7 @@ with open('/content/output/inference/inference_coco.json', 'w') as f:
   
 def parse_args():
   parser = argparse.ArgumentParser()
+  parser.add_argument("--image_dir, type=str)
   parser.add_argument("--checkpoint", type=str, default="detectron2://Misc/cascade_mask_rcnn_X_152_32x8d_FPN_IN5k_gn_dconv/18131413/model_0039999_e76410.pkl")
   parser.add_argument("--nms_threshold, type=float, default=0.5)
   parser.add_argument("--detection_threshold, type=float, default=0.5)
