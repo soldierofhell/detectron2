@@ -63,5 +63,20 @@ def supervisely2coco(dataset_dicts, output_file, thing_classes=None):
     MetadataCatalog.get(dataset_name).set(thing_classes=thing_classes)
     
   convert_to_coco_json(dataset_name, output_file, allow_cached=False)
+  
+def parse_args():
+  parser = argparse.ArgumentParser()  
+  parser.add_argument("--image_dir, type=str)
+  parser.add_argument("--json_path, type=str)
+  
+  return parser.parse_args()
+
+
+if __name__ == "__main__":
+  args = parse_args()
+
+  base_dir, sub_dir = os.path.split(os.path.split(args.image_dir)[0])                  
+  dataset_dicts = get_supervisely_dicts(base_dir, sub_dir, categories=["player"])
+  supervisely2coco(dataset_dicts, args.json_path, thing_classes=["person"])
     
     
