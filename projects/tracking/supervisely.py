@@ -59,7 +59,7 @@ def supervisely2coco(dataset_dicts, output_file, thing_classes=None):
   dataset_name = "temp_dataset" # todo: randomize name
   
   DatasetCatalog.clear() # ?
-  DatasetCatalog.register(dataset_name, lambda d=d: dataset_dicts)
+  DatasetCatalog.register(dataset_name, lambda: dataset_dicts)
   if thing_classes: # todo: we can add it to dataset_dicts, e.g. dataset_dicts[0]['annotations']['class_name'] = ... and here collect
     MetadataCatalog.get(dataset_name).set(thing_classes=thing_classes)
     
