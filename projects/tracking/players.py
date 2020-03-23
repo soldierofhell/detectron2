@@ -112,4 +112,4 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
 
-    players_loader = build_players_loader(cfg, json_file, image_root)
+    players_loader = build_players_loader(arg.cfg, arg.json_path, args.image_dir)
