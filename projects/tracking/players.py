@@ -1,17 +1,17 @@
-json_file = '/content/output/inference/inference_coco.json'
-image_root = '/content/LhcTGafSgw_all'
+#json_file = '/content/output/inference/inference_coco.json'
+#image_root = '/content/LhcTGafSgw_all'
 
 from detectron2.data.datasets import load_coco_json
-results = load_coco_json(json_file, image_root, dataset_name='players')
+#results = load_coco_json(json_file, image_root, dataset_name='players')
 
-from detectron2.data.datasets import register_coco_instances
-register_coco_instances('players', {}, json_file, image_root)
+#from detectron2.data.datasets import register_coco_instances
+#register_coco_instances('players', {}, json_file, image_root)
 
 import copy
 import numpy as np
 
 from detectron2.data import detection_utils as utils
-from detectron2.data import transforms as T
+#from detectron2.data import transforms as T
 
 class PlayerMapper:
     """
