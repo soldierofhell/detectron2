@@ -35,9 +35,12 @@ from detectron2.evaluation import COCOEvaluator, inference_on_dataset, DatasetEv
 from detectron2.data import build_detection_test_loader
 
 def create_players_coco(image_dir, json_path, checkpoint, nms_threshold, detection_threshold, batch_size):
+  
+  dataset_name = "inference_dataset" # todo: randomize?
+  
   DatasetCatalog.clear()
-  DatasetCatalog.register("inference_dataset", lambda: get_img_dicts('/content/LhcTGafSgw_all'))
-  MetadataCatalog.get("inference_dataset").set(thing_classes=["person"])
+  DatasetCatalog.register(dataset_name, lambda: get_img_dicts(image_dir))
+  MetadataCatalog.get(dataset_name).set(thing_classes=["person"])
 
   cfg = get_cfg()
 
@@ -52,11 +55,10 @@ def create_players_coco(image_dir, json_path, checkpoint, nms_threshold, detecti
   model.eval()
   DetectionCheckpointer(model).load(cfg.MODEL.WEIGHTS)
 
-  val_dataset = "inference_dataset"
   output_folder = os.path.join(cfg.OUTPUT_DIR, "inference")
 
-  coco_data_loader = build_detection_test_loader(cfg, val_dataset) # batch_size = cfg.DATALOADER.NUM_WORKERS
-  coco_evaluator = COCOEvaluator(val_dataset, cfg, False, output_folder)
+  coco_data_loader = build_detection_test_loader(cfg, dataset_name) # batch_size = cfg.DATALOADER.NUM_WORKERS
+  coco_evaluator = COCOEvaluator(dataset_name, cfg, False, output_folder)
 
   inference_on_dataset(model, coco_data_loader, evaluator=coco_evaluator)  
 
