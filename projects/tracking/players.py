@@ -7,6 +7,7 @@ from detectron2.data.datasets import load_coco_json
 #from detectron2.data.datasets import register_coco_instances
 #register_coco_instances('players', {}, json_file, image_root)
 
+import argparse
 import copy
 import numpy as np
 
