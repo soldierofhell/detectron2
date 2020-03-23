@@ -71,6 +71,7 @@ def create_players_coco(image_dir, json_path, cfg_path, checkpoint, nms_threshol
 
   for idx, ann in enumerate(annotations_list):
     ann['id'] = idx
+    ann['bbox'] = [int(x) for x in ann['bbox']]
 
   coco_dict['annotations'] = annotations_list
 
