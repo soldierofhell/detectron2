@@ -54,6 +54,8 @@ class PlayerMapper:
         new_dict = {"image_list": image_list}
 
         return new_dict #dataset_dict
+
+
 import torch
 
 from detectron2.data.common import DatasetFromList, MapDataset
