@@ -18,7 +18,7 @@ class PlayerMapper:
     """
     """
 
-    def __init__(self, cfg):
+    def __init__(self): # , cfg
 
         #self.tfm_gens = utils.build_transform_gen(cfg, False)
         self.img_format = "BGR" #cfg.INPUT.FORMAT
