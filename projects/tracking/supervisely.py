@@ -47,3 +47,21 @@ def get_supervisely_dicts(base_dir, sub_dir, categories):
     record["annotations"] = objs
     dataset_dicts.append(record)
   return dataset_dicts
+
+from detectron2.data.datasets.coco import convert_to_coco_json
+from detectron2.data import DatasetCatalog, MetadataCatalog
+
+def supervisely2coco(dataset_dicts, output_file, dataset_name=None, thing_classes=None):
+  
+  # it would be better to have detrectron2 functions that accept dataset_dicts not dataset
+  
+  if dataset_name is None:
+    dataset_name = "temp_dataset" # todo: randomize name
+  
+  DatasetCatalog.register(dataset_name, lambda d=d: dataset_dicts)
+  if thing_classes: # todo: we can add it to dataset_dicts, e.g. dataset_dicts[0]['annotations']['class_name'] = ... and here collect
+    MetadataCatalog.get(dataset_name).set(thing_classes=thing_classes)
+    
+  convert_to_coco_json("supervisely_val", output_file, allow_cached=False)
+    
+    
