@@ -19,8 +19,8 @@ class PlayerMapper:
 
     def __init__(self, cfg):
 
-        self.tfm_gens = utils.build_transform_gen(cfg, False)
-        self.img_format = cfg.INPUT.FORMAT
+        #self.tfm_gens = utils.build_transform_gen(cfg, False)
+        self.img_format = "BGR" #cfg.INPUT.FORMAT
 
     def __call__(self, dataset_dict):
         """
@@ -29,9 +29,12 @@ class PlayerMapper:
         Returns:
             dict: a format that builtin models in detectron2 accept
         """
+        
+        # todo: decide wheather dataset_dict is needed
+        
         dataset_dict = copy.deepcopy(dataset_dict)
         image = utils.read_image(dataset_dict["file_name"], format=self.img_format)
-        utils.check_image_size(dataset_dict, image)
+        utils.check_image_size(dataset_dict, image) # ?
 
         image_list = []
 
@@ -39,7 +42,7 @@ class PlayerMapper:
           #bbox = BoxMode.convert(ann['bbox'], BoxMode.XYWH_ABS, BoxMode.XYXY_ABS)
           bbox = [int(x) for x in ann['bbox']]
           image_crop = image[bbox[1]:(bbox[1]+bbox[3]),bbox[0]:(bbox[0]+bbox[2])]
-          image_crop, _ = T.apply_transform_gens(self.tfm_gens, image_crop)
+          #image_crop, _ = T.apply_transform_gens(self.tfm_gens, image_crop)
           image_crop = torch.as_tensor(np.ascontiguousarray(image.transpose(2, 0, 1)))
 
           image_list.append({
@@ -73,13 +76,13 @@ def trivial_batch_collator(batch):
 
     return collated_list
 
-def build_players_loader(cfg, json_file, image_root):
+def build_players_loader(json_file, image_root):
     """
     """
     dataset_dicts = load_coco_json(json_file, image_root)
 
     dataset = DatasetFromList(dataset_dicts)
-    dataset = MapDataset(dataset, PlayerMapper(cfg))
+    dataset = MapDataset(dataset, PlayerMapper())
 
     sampler = samplers.InferenceSampler(len(dataset))
     # Always use 1 image per worker during inference since this is the
@@ -88,9 +91,9 @@ def build_players_loader(cfg, json_file, image_root):
 
     data_loader = torch.utils.data.DataLoader(
         dataset,
-        num_workers=cfg.DATALOADER.NUM_WORKERS,
-        batch_sampler=batch_sampler,
-        collate_fn=trivial_batch_collator,
+        num_workers = batch_size,
+        batch_sampler = batch_sampler,
+        collate_fn = trivial_batch_collator,
     )
     return data_loader
 
@@ -100,11 +103,7 @@ def parse_args():
     parser = argparse.ArgumentParser()  
     parser.add_argument("--image_dir, type=str)
     parser.add_argument("--json_path, type=str)
-    parser.add_argument("--cfg", type=str, default="detectron2://Misc/cascade_mask_rcnn_X_152_32x8d_FPN_IN5k_gn_dconv/18131413/model_0039999_e76410.pkl")
-    parser.add_argument("--checkpoint", type=str, default="detectron2://Misc/cascade_mask_rcnn_X_152_32x8d_FPN_IN5k_gn_dconv/18131413/model_0039999_e76410.pkl")
-    parser.add_argument("--nms_threshold, type=float, default=0.5)
-    parser.add_argument("--detection_threshold, type=float, default=0.5)
-    parser.add_argument("--batch_size, type=int, default=1)
+    parser.add_argument("--batch_size, type=int)                        
 
     return parser.parse_args()
 
@@ -112,4 +111,4 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
 
-    players_loader = build_players_loader(arg.cfg, arg.json_path, args.image_dir)
+    players_loader = build_players_loader(arg.json_path, args.image_dir, args.batch_size)
