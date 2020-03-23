@@ -94,4 +94,17 @@ def build_players_loader(cfg, json_file, image_root):
     )
     return data_loader
 
-players_loader = build_players_loader(cfg, json_file, image_root)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()  
+    parser.add_argument("--image_dir, type=str)
+    parser.add_argument("--json_path, type=str)
+
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = parse_args()
+
+    players_loader = build_players_loader(cfg, json_file, image_root)
