@@ -35,7 +35,7 @@ from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset, DatasetEvaluators
 from detectron2.data import build_detection_test_loader
 
-def create_players_coco(image_dir, json_path, checkpoint, nms_threshold, detection_threshold, batch_size):
+def create_players_coco(image_dir, json_path, cfg_path, checkpoint, nms_threshold, detection_threshold, batch_size):
   
   dataset_name = "inference_dataset" # todo: randomize?
   
@@ -46,7 +46,7 @@ def create_players_coco(image_dir, json_path, checkpoint, nms_threshold, detecti
   cfg = get_cfg()
 
   # Cascade Mask RCNN ResNeXt 152
-  cfg.merge_from_file("./detectron2_repo/configs/Misc/cascade_mask_rcnn_X_152_32x8d_FPN_IN5k_gn_dconv.yaml")
+  cfg.merge_from_file(cfg_path)
   cfg.MODEL.WEIGHTS = checkpoint
   cfg.MODEL.MASK_ON = False
   cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1
@@ -92,4 +92,4 @@ def parse_args():
 
 if __name__ == "__main__":
   args = parse_args()
-  create_players_coco(args.image_dir, args.json_path, args.checkpoint, args.nms_threshold, args.detection_threshold, args.batch_size)
+  create_players_coco(args.image_dir, args.json_path, args.cfg, args.checkpoint, args.nms_threshold, args.detection_threshold, args.batch_size)
