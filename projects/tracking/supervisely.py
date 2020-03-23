@@ -66,8 +66,8 @@ def supervisely2coco(dataset_dicts, output_file, thing_classes=None):
   
 def parse_args():
   parser = argparse.ArgumentParser()  
-  parser.add_argument("--image_dir, type=str)
-  parser.add_argument("--json_path, type=str)
+  parser.add_argument("--image_dir", type=str)
+  parser.add_argument("--json_path", type=str)
   
   return parser.parse_args()
 
