@@ -77,7 +77,7 @@ def trivial_batch_collator(batch):
 
     return collated_list
 
-def build_players_loader(json_file, image_root):
+def build_players_loader(json_file, image_root, batch_size):
     """
     """
     dataset_dicts = load_coco_json(json_file, image_root)
