@@ -53,6 +53,8 @@ def create_players_coco(image_dir, json_path, cfg_path, vovnet, checkpoint, nms_
   cfg.DATALOADER.NUM_WORKERS = batch_size
   
   if vovnet:
+    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
+    
     from point_rend.config import add_pointrend_config
     from vovnet import add_vovnet_config
     add_vovnet_config(cfg)
