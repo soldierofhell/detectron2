@@ -100,4 +100,4 @@ def parse_args():
 
 if __name__ == "__main__":
   args = parse_args()
-  create_players_coco(args.image_dir, args.json_path, args.cfg, args.checkpoint, args.nms_threshold, args.detection_threshold, args.batch_size)
+  create_players_coco(args.image_dir, args.json_path, args.cfg, args.vovnet, args.checkpoint, args.nms_threshold, args.detection_threshold, args.batch_size)
