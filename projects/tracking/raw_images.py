@@ -35,7 +35,7 @@ from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset, DatasetEvaluators
 from detectron2.data import build_detection_test_loader
 
-def create_players_coco(image_dir, json_path, cfg_path, checkpoint, nms_threshold, detection_threshold, batch_size):
+def create_players_coco(image_dir, json_path, cfg_path, vovnet, checkpoint, nms_threshold, detection_threshold, batch_size):
   
   dataset_name = "inference_dataset" # todo: randomize?
   
@@ -51,6 +51,12 @@ def create_players_coco(image_dir, json_path, cfg_path, checkpoint, nms_threshol
   cfg.MODEL.MASK_ON = False
   cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1
   cfg.DATALOADER.NUM_WORKERS = batch_size
+  
+  if vovnet:
+    from point_rend.config import add_pointrend_config
+    from vovnet import add_vovnet_config
+    add_vovnet_config(cfg)
+    add_pointrend_config(cfg)
 
   model = build_model(cfg)
   model.eval()
@@ -87,6 +93,7 @@ def parse_args():
   parser.add_argument("--nms_threshold", type=float, default=0.5)
   parser.add_argument("--detection_threshold", type=float, default=0.5)
   parser.add_argument("--batch_size", type=int, default=1)
+  parser.add_argument("--vovnet", action="store_true")
   
   return parser.parse_args()
 
