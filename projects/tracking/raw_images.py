@@ -4,6 +4,9 @@ import cv2
 
 from detectron2.data import DatasetCatalog, MetadataCatalog
 
+from .vovnet import add_vovnet_config
+from ..PointRend.point_rend.config import add_pointrend_config
+
 def get_img_dicts(img_dir):
 
   img_files = sorted(os.listdir(img_dir))
@@ -55,8 +58,8 @@ def create_players_coco(image_dir, json_path, cfg_path, mask_on, num_classes, vo
   if vovnet:
     #cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
     
-    from point_rend.config import add_pointrend_config
-    from vovnet import add_vovnet_config
+    #from point_rend.config import add_pointrend_config
+    #from vovnet import add_vovnet_config
     add_vovnet_config(cfg)
     add_pointrend_config(cfg)
 
