@@ -50,13 +50,6 @@ def create_players_coco(image_dir, json_path, cfg_path, mask_on, num_classes, vo
   MetadataCatalog.get(dataset_name).set(thing_classes=["person"])
 
   cfg = get_cfg()
-
-  # Cascade Mask RCNN ResNeXt 152
-  cfg.merge_from_file(cfg_path)
-  cfg.MODEL.WEIGHTS = checkpoint
-  cfg.MODEL.MASK_ON = False
-  cfg.MODEL.ROI_HEADS.NUM_CLASSES = num_classes #1
-  cfg.DATALOADER.NUM_WORKERS = batch_size
   
   if vovnet:
     #cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
@@ -65,6 +58,15 @@ def create_players_coco(image_dir, json_path, cfg_path, mask_on, num_classes, vo
     #from vovnet import add_vovnet_config
     add_vovnet_config(cfg)
     add_pointrend_config(cfg)
+
+  # Cascade Mask RCNN ResNeXt 152
+  cfg.merge_from_file(cfg_path)
+  cfg.MODEL.WEIGHTS = checkpoint
+  cfg.MODEL.MASK_ON = False
+  cfg.MODEL.ROI_HEADS.NUM_CLASSES = num_classes #1
+  cfg.DATALOADER.NUM_WORKERS = batch_size
+  
+
 
   model = build_model(cfg)
   model.eval()
