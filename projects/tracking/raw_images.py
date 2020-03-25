@@ -35,7 +35,7 @@ from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset, DatasetEvaluators
 from detectron2.data import build_detection_test_loader
 
-def create_players_coco(image_dir, json_path, cfg_path, vovnet, checkpoint, nms_threshold, detection_threshold, batch_size):
+def create_players_coco(image_dir, json_path, cfg_path, mask_on, num_classes, vovnet, checkpoint, nms_threshold, detection_threshold, batch_size):
   
   dataset_name = "inference_dataset" # todo: randomize?
   
@@ -49,11 +49,11 @@ def create_players_coco(image_dir, json_path, cfg_path, vovnet, checkpoint, nms_
   cfg.merge_from_file(cfg_path)
   cfg.MODEL.WEIGHTS = checkpoint
   cfg.MODEL.MASK_ON = False
-  cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1
+  cfg.MODEL.ROI_HEADS.NUM_CLASSES = num_classes #1
   cfg.DATALOADER.NUM_WORKERS = batch_size
   
   if vovnet:
-    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
+    #cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
     
     from point_rend.config import add_pointrend_config
     from vovnet import add_vovnet_config
@@ -97,10 +97,11 @@ def parse_args():
   parser.add_argument("--batch_size", type=int, default=1)
   parser.add_argument("--vovnet", action="store_true")
   parser.add_argument("--mask_on", action="store_true")
+  parser.add_argument("--num_classes", type=int, default=1)
   
   return parser.parse_args()
 
 
 if __name__ == "__main__":
   args = parse_args()
-  create_players_coco(args.image_dir, args.json_path, args.cfg, args.vovnet, args.checkpoint, args.nms_threshold, args.detection_threshold, args.batch_size)
+  create_players_coco(args.image_dir, args.json_path, args.cfg, args.mask_on, args.num_classes, args.vovnet, args.checkpoint, args.nms_threshold, args.detection_threshold, args.batch_size)
