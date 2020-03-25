@@ -48,6 +48,8 @@ def create_players_coco(image_dir, json_path, cfg_path, mask_on, num_classes, th
   DatasetCatalog.clear()
   DatasetCatalog.register(dataset_name, lambda: get_img_dicts(image_dir))
   MetadataCatalog.get(dataset_name).set(thing_classes=thing_classes)
+  
+  print('classes: ', thing_classes)
 
   cfg = get_cfg()
   
