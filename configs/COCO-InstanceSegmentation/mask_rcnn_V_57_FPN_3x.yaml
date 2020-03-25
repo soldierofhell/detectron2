@@ -1,0 +1,12 @@
+_BASE_: "Base-PointRend-VoV.yaml"
+MODEL:
+  WEIGHTS: "../input/weights/detectron/mask_V_57_eSE_ms_3x_clean.pth"
+  MASK_ON: True
+  VOVNET:
+    CONV_BODY : "V-57-eSE"
+  POINT_HEAD:
+    NUM_CLASSES: 4
+SOLVER:
+  IMS_PER_BATCH: 2
+  STEPS: (4000, 6000)
+  MAX_ITER: 9000
