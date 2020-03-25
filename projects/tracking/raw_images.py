@@ -4,8 +4,11 @@ import cv2
 
 from detectron2.data import DatasetCatalog, MetadataCatalog
 
-from .vovnet import add_vovnet_config
-from .point_rend import add_pointrend_config
+#from .vovnet import add_vovnet_config
+#from .point_rend import add_pointrend_config
+
+import vovnet
+import point_rend
 
 def get_img_dicts(img_dir):
 
