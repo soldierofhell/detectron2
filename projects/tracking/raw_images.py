@@ -96,6 +96,7 @@ def parse_args():
   parser.add_argument("--detection_threshold", type=float, default=0.5)
   parser.add_argument("--batch_size", type=int, default=1)
   parser.add_argument("--vovnet", action="store_true")
+  parser.add_argument("--mask_on", action="store_true")
   
   return parser.parse_args()
 
