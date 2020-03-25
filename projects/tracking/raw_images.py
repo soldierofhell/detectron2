@@ -8,7 +8,7 @@ from detectron2.data import DatasetCatalog, MetadataCatalog
 #from .point_rend import add_pointrend_config
 
 import vovnet
-#import point_rend
+import point_rend
 
 def get_img_dicts(img_dir):
 
