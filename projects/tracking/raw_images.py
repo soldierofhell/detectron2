@@ -88,8 +88,13 @@ def create_players_coco(image_dir, gt_json, predicted_json, cfg_path, mask_on, n
   
   inference_on_dataset(model, coco_data_loader, evaluator=coco_evaluator)  
 
-  with open(os.path.join(output_folder, 'inference_dataset_coco_format.json'), 'r') as f:
-    coco_dict = json.load(f)
+  # TODO: check this
+  if gt_json is not None:
+    with open(gt_json, 'r') as f:
+      coco_dict = json.load(f)
+  else:
+    with open(os.path.join(output_folder, 'inference_dataset_coco_format.json'), 'r') as f:
+      coco_dict = json.load(f)
 
   with open(os.path.join(output_folder, 'coco_instances_results.json'), 'r') as f:
     annotations_list = json.load(f)
