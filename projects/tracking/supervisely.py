@@ -78,7 +78,7 @@ if __name__ == "__main__":
   args = parse_args()
 
   base_dir, sub_dir = os.path.split(os.path.split(args.image_dir)[0])                  
-  dataset_dicts = get_supervisely_dicts(base_dir, sub_dir, categories={"person": args.thing_classes.index("player")}])
+  dataset_dicts = get_supervisely_dicts(base_dir, sub_dir, categories={"person": args.thing_classes.index("player")})
   supervisely2coco(dataset_dicts, args.json_path, thing_classes=args.thing_classes)
     
     
