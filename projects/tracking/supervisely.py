@@ -34,14 +34,14 @@ def get_supervisely_dicts(base_dir, sub_dir, categories):
     objs = []
     for anno in ann_dict["objects"]:
       category = anno["classTitle"]
-      if category in categories:
+      if category in categories.keys():
         bbox = anno["points"]["exterior"]
         bbox = bbox[0]+bbox[1]
         bbox = [min(bbox[0], bbox[2]), min(bbox[1], bbox[3]), max(bbox[0], bbox[2]), max(bbox[1], bbox[3])]
         obj = {
             "bbox": bbox,
             "bbox_mode": BoxMode.XYXY_ABS,
-            "category_id": categories.index(category),
+            "category_id": categories[categories.keys().index(category)],
             "iscrowd": 0
         }
         objs.append(obj)
@@ -78,7 +78,7 @@ if __name__ == "__main__":
   args = parse_args()
 
   base_dir, sub_dir = os.path.split(os.path.split(args.image_dir)[0])                  
-  dataset_dicts = get_supervisely_dicts(base_dir, sub_dir, categories=["player"])
+  dataset_dicts = get_supervisely_dicts(base_dir, sub_dir, categories={"person": args.thing_classes.index("player")}])
   supervisely2coco(dataset_dicts, args.json_path, thing_classes=args.thing_classes)
     
     
