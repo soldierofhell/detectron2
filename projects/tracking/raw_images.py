@@ -41,13 +41,18 @@ from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset, DatasetEvaluators
 from detectron2.data import build_detection_test_loader
 
-def create_players_coco(image_dir, json_path, cfg_path, mask_on, num_classes, thing_classes, vovnet, checkpoint, nms_threshold, detection_threshold, batch_size):
+def create_players_coco(image_dir, gt_json, predicted_json, cfg_path, mask_on, num_classes, thing_classes, vovnet, checkpoint, nms_threshold, detection_threshold, batch_size):
   
   dataset_name = "inference_dataset" # todo: randomize?
   
   DatasetCatalog.clear()
-  DatasetCatalog.register(dataset_name, lambda: get_img_dicts(image_dir))
-  MetadataCatalog.get(dataset_name).set(thing_classes=thing_classes)
+  
+  if gt_json is not None:
+    from detectron2.data.datasets import register_coco_instances
+    register_coco_instances(dataset_name, {}, gt_json, image_root)
+  else:
+    DatasetCatalog.register(dataset_name, lambda: get_img_dicts(image_dir))    
+    MetadataCatalog.get(dataset_name).set(thing_classes=thing_classes)
   
   print('classes: ', thing_classes)
 
@@ -79,6 +84,8 @@ def create_players_coco(image_dir, json_path, cfg_path, mask_on, num_classes, th
   coco_data_loader = build_detection_test_loader(cfg, dataset_name) # batch_size = cfg.DATALOADER.NUM_WORKERS
   coco_evaluator = COCOEvaluator(dataset_name, cfg, False, output_folder)
 
+  # TODO: if gt_json is not None: don't calculate
+  
   inference_on_dataset(model, coco_data_loader, evaluator=coco_evaluator)  
 
   with open(os.path.join(output_folder, 'inference_dataset_coco_format.json'), 'r') as f:
@@ -93,15 +100,16 @@ def create_players_coco(image_dir, json_path, cfg_path, mask_on, num_classes, th
 
   coco_dict['annotations'] = annotations_list
 
-  with open(json_path, 'w') as f:
+  with open(predicted_json, 'w') as f:
     json.dump(coco_dict, f)
   
 def parse_args():
   parser = argparse.ArgumentParser()  
   parser.add_argument("--image_dir", type=str)
-  parser.add_argument("--json_path", type=str)
+  parser.add_argument("--gt_json", type=str)
   parser.add_argument("--cfg", type=str, default="./detectron2_repo/configs/Misc/cascade_mask_rcnn_X_152_32x8d_FPN_IN5k_gn_dconv.yaml")
   parser.add_argument("--checkpoint", type=str, default="detectron2://Misc/cascade_mask_rcnn_X_152_32x8d_FPN_IN5k_gn_dconv/18131413/model_0039999_e76410.pkl")
+  parser.add_argument("--predicted_json", type=str)
   parser.add_argument("--nms_threshold", type=float, default=0.5)
   parser.add_argument("--detection_threshold", type=float, default=0.5)
   parser.add_argument("--batch_size", type=int, default=1)
@@ -115,4 +123,4 @@ def parse_args():
 
 if __name__ == "__main__":
   args = parse_args()
-  create_players_coco(args.image_dir, args.json_path, args.cfg, args.mask_on, args.num_classes, args.thing_classes, args.vovnet, args.checkpoint, args.nms_threshold, args.detection_threshold, args.batch_size)
+  create_players_coco(args.image_dir, args.gt_json, args.predicted_json, args.cfg, args.mask_on, args.num_classes, args.thing_classes, args.vovnet, args.checkpoint, args.nms_threshold, args.detection_threshold, args.batch_size)
