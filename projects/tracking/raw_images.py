@@ -49,7 +49,7 @@ def create_players_coco(image_dir, gt_json, predicted_json, cfg_path, mask_on, n
   
   if gt_json is not None:
     from detectron2.data.datasets import register_coco_instances
-    register_coco_instances(dataset_name, {}, gt_json, image_root)
+    register_coco_instances(dataset_name, {}, gt_json, image_dir)
   else:
     DatasetCatalog.register(dataset_name, lambda: get_img_dicts(image_dir))    
     MetadataCatalog.get(dataset_name).set(thing_classes=thing_classes)
