@@ -69,6 +69,7 @@ def parse_args():
   parser = argparse.ArgumentParser()  
   parser.add_argument("--image_dir", type=str)
   parser.add_argument("--json_path", type=str)
+  parser.add_argument("--thing_classes", type=str)
   
   return parser.parse_args()
 
@@ -78,6 +79,6 @@ if __name__ == "__main__":
 
   base_dir, sub_dir = os.path.split(os.path.split(args.image_dir)[0])                  
   dataset_dicts = get_supervisely_dicts(base_dir, sub_dir, categories=["player"])
-  supervisely2coco(dataset_dicts, args.json_path, thing_classes=["person"])
+  supervisely2coco(dataset_dicts, args.json_path, thing_classes=args.thing_classes)
     
     
