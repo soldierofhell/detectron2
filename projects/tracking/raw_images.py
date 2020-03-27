@@ -73,6 +73,11 @@ def create_players_coco(image_dir, gt_json, predicted_json, cfg_path, mask_on, n
   cfg.MODEL.ROI_HEADS.NUM_CLASSES = num_classes #1
   cfg.DATALOADER.NUM_WORKERS = batch_size
   
+  print('org score and nms: ', cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST, cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST)
+  
+  cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5
+  cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST = 0.5
+  
 
 
   model = build_model(cfg)
